@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRENADE5 — Produção em Alta Performance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dosis:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --gold:#C9A227; --gold-deep:#9C7B16; --gold-soft:#EAD27A; --gold-bg:#FBF3D8;
+    --green:#6FA82E; --green-deep:#4F7C1B; --green-soft:#AED581; --green-bg:#EEF6E0;
+    --blue:#3E92CC; --blue-deep:#1F6699; --blue-soft:#9FD0EC; --blue-bg:#E5F1FA;
+    --violet:#7E57C2; --violet-deep:#5B3A98; --violet-soft:#C3ACE6; --violet-bg:#F0E9F9;
+    --ink:#2A2A26; --muted:#6B6A62; --line:#E7E3D6; --paper:#FFFFFF; --bg:#FAF7EF;
+    --radius:16px; --radius-sm:11px; --shadow:0 2px 4px rgba(40,38,30,.05),0 8px 24px rgba(40,38,30,.06);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:172px}
+  body{font-family:"Dosis",system-ui,sans-serif;font-size:17px;line-height:1.6;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;}
+  a{color:inherit}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+
+  /* HEADER */
+  header.brand{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,#fff 0%,var(--gold-bg) 100%);border-bottom:4px solid var(--gold);}
+  .brand-inner{display:flex;align-items:center;gap:28px;padding:22px 24px;max-width:1120px;margin:0 auto}
+  .brand-logo{flex:0 0 auto}
+  .brand-logo img{display:block;height:104px;width:auto}
+  .brand-titles{flex:1 1 auto;text-align:center;display:flex;flex-direction:column;gap:7px;min-width:0}
+  .t1{font-size:1.42rem;font-weight:700;line-height:1.22;color:var(--ink);letter-spacing:.2px}
+  .t1 strong{color:var(--gold-deep)}
+  .t2{font-size:1rem;font-weight:500;color:var(--muted)}
+  .t-meta{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:4px}
+  .t-meta span{font-size:.86rem;font-weight:600;color:var(--gold-deep);background:#fff;border:1px solid var(--gold-soft);border-radius:999px;padding:4px 13px;}
+
+  /* HERO */
+  .hero{background:var(--paper);border-bottom:1px solid var(--line)}
+  .hero-grid{display:grid;grid-template-columns:1fr;gap:0;padding:30px 0 34px;justify-items:center}
+  .eyebrow{font-size:.82rem;font-weight:700;letter-spacing:2.4px;text-transform:uppercase;color:var(--green-deep)}
+  .hero h1{font-size:3rem;font-weight:800;line-height:1.04;margin:12px 0 8px;letter-spacing:-.5px}
+  .hero h1 em{font-style:normal;color:var(--gold-deep)}
+  .hero .lead{font-size:1.12rem;color:var(--muted);max-width:46ch;font-weight:500}
+
+  /* DESEMPENHO QUADROS */
+  .desemp-label{font-size:.78rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);margin:14px 0 8px}
+  .desemp-track{display:flex;gap:6px;flex-wrap:nowrap}
+  .desemp-card{flex:1;min-width:0;background:#fff;border:1.5px solid var(--line);border-radius:9px;padding:7px 8px;text-align:center;box-shadow:var(--shadow)}
+  .desemp-card .d-ano{font-size:.66rem;font-weight:700;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;line-height:1.2}
+  .desemp-card .d-nota{font-size:1.45rem;font-weight:800;margin:3px 0 1px;line-height:1}
+  .desemp-card.n3 .d-nota{color:var(--blue-deep)}
+  .desemp-card.n2 .d-nota{color:#E57373}
+  .desemp-card.n4 .d-nota{color:var(--violet-deep)}
+  .desemp-card.n2{background:#fff5f5;border-color:#FFCDD2}
+  .desemp-card.n4{background:var(--violet-bg);border-color:var(--violet-soft)}
+  .desemp-card .d-label{font-size:.6rem;font-weight:600;color:var(--muted)}
+
+  /* SCALE */
+  .scale{margin-top:26px}
+  .scale-label{font-size:.8rem;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+  .scale-track{display:flex;gap:8px}
+  .scale-step{flex:1;height:46px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.25rem;border:1.5px solid var(--line);background:#fff;color:#BDB9AC;}
+  .scale-step.s2{color:#A7C28A;border-color:var(--green-soft)}
+  .scale-step.s3{color:#7FB8DD;border-color:var(--blue-soft)}
+  .scale-step.s4{color:#B39AD9;border-color:var(--violet-soft)}
+  .scale-step.s5{color:#fff;background:var(--gold);border-color:var(--gold-deep);font-size:1.7rem;box-shadow:0 6px 18px rgba(201,162,39,.4);position:relative;animation:blink-gold 1.4s ease-in-out infinite;}
+  .scale-step.s5::after{content:"Meta";position:absolute;top:-11px;right:-4px;font-size:.62rem;letter-spacing:1px;background:var(--gold-deep);color:#fff;padding:2px 7px;border-radius:999px;font-weight:700}
+  
+  /* COUNTDOWN BLINK */
+  .dias-blink{animation:blink-dias 1.8s ease-in-out infinite}
+  @keyframes blink-dias{0%,100%{opacity:1;color:var(--violet-deep);}50%{opacity:.45;color:#9C7B16;}}
+
+  @keyframes blink-gold{0%,100%{background:var(--gold);box-shadow:0 6px 18px rgba(201,162,39,.4);}50%{background:#f0c030;box-shadow:0 6px 32px rgba(201,162,39,.85);color:#7a5500;}}
+
+  /* COUNTDOWN */
+  .count{background:linear-gradient(160deg,var(--violet-bg),#fff);border:1px solid var(--violet-soft);border-radius:var(--radius);padding:16px 18px 14px;box-shadow:var(--shadow)}
+  .count h3{font-size:.76rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--violet-deep)}
+  .count .date{font-size:.88rem;font-weight:600;color:var(--ink);margin:3px 0 10px}
+  .clock{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}
+  .unit{background:#fff;border:1px solid var(--line);border-radius:9px;padding:9px 4px;text-align:center}
+  .unit b{display:block;font-size:1.55rem;font-weight:800;color:var(--violet-deep);line-height:1}
+  .unit small{font-size:.64rem;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .count .note{font-size:.76rem;color:var(--muted);margin-top:9px;font-weight:500}
+
+  /* EDITAL BTN */
+  .edital-btn{display:inline-flex;align-items:center;gap:10px;margin-top:18px;background:var(--gold);color:#fff;font-weight:700;font-size:1rem;text-decoration:none;padding:12px 22px;border-radius:999px;box-shadow:0 6px 16px rgba(201,162,39,.35);transition:transform .18s,background .18s}
+  .edital-btn:hover{background:var(--gold-deep);transform:translateY(-2px)}
+  .edital-btn svg{display:block}
+
+  /* TAB NAV */
+  .tab-nav{background:var(--paper);border-bottom:3px solid var(--line);position:sticky;top:152px;z-index:40}
+  .tab-nav-inner{display:flex;gap:4px;padding:0 24px;max-width:1120px;margin:0 auto;flex-wrap:wrap}
+  .tab-btn{font-family:"Dosis",sans-serif;font-weight:700;font-size:.95rem;text-decoration:none;padding:14px 18px;border:none;background:none;cursor:pointer;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-3px;transition:.18s;white-space:nowrap;}
+  .tab-btn:hover{color:var(--ink);background:var(--gold-bg)}
+  .tab-btn.active{color:var(--gold-deep);border-bottom-color:var(--gold);background:var(--gold-bg)}
+
+  /* TAB PANELS */
+  .tab-panel{display:none;padding:50px 0}
+  .tab-panel.active{display:block}
+
+  /* LICOES - tabela */
+  .stats-table{width:100%;border-collapse:collapse;background:var(--paper);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);margin-bottom:30px}
+  .stats-table th{background:var(--gold);color:#fff;font-weight:700;padding:12px 16px;text-align:center;font-size:.95rem;letter-spacing:.3px}
+  .stats-table td{padding:11px 16px;text-align:center;font-weight:600;font-size:.97rem;border-bottom:1px solid var(--line)}
+  .stats-table tr:last-child td{border-bottom:none}
+  .stats-table tr:nth-child(even) td{background:#fafaf6}
+  .stats-table tr.row-n4 td{background:#f3effc;color:var(--violet-deep)}
+  .stats-table tr.row-n4 td.nota-4{font-size:1.1rem}
+  .stats-table tr.row-n2 td{background:#fff5f5;color:#c62828}
+  .stats-table tr.row-n2 td.nota-2{font-size:1.1rem}
+  .stats-table tr.row-n4 .yr{color:var(--violet-deep)}
+  .stats-table tr.row-n2 .yr{color:#c62828}
+  .stats-table .yr{font-weight:800;color:var(--gold-deep)}
+  .stats-table .nota-3{color:var(--blue-deep)}
+  .stats-table .nota-2{color:#E57373}
+  .stats-table .nota-4{color:var(--violet-deep)}
+  .enade-links{text-align:center;margin-top:10px}
+  .enade-links p{font-size:1rem;font-weight:600;color:var(--ink);margin-bottom:16px}
+  .enade-links-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .enade-link-btn{display:inline-flex;align-items:center;gap:8px;background:var(--blue);color:#fff;font-weight:700;font-size:.95rem;text-decoration:none;padding:11px 20px;border-radius:999px;box-shadow:0 4px 12px rgba(62,146,204,.3);transition:transform .18s,background .18s}
+  .enade-link-btn:hover{background:var(--blue-deep);transform:translateY(-2px)}
+  .enade-link-btn.e2011{background:#5B3A98}.enade-link-btn.e2011:hover{background:#3e2570}
+  .enade-link-btn.e2014{background:#2e7d32}.enade-link-btn.e2014:hover{background:#1b5e20}
+  .enade-link-btn.e2017{background:#1F6699}.enade-link-btn.e2017:hover{background:#144d73}
+  .enade-link-btn.e2023{background:#C9A227}.enade-link-btn.e2023:hover{background:#9C7B16}
+  .enade-link-btn.e2008{background:#7E57C2}.enade-link-btn.e2008:hover{background:#5B3A98}
+
+  /* SECTIONS internos */
+  .sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:8px}
+  .sec-num{font-size:2.4rem;font-weight:800;line-height:1;opacity:.9}
+  .sec-head h2{font-size:1.85rem;font-weight:700;letter-spacing:-.3px}
+  .sec-sub{color:var(--muted);font-weight:500;margin:2px 0 30px;font-size:1.05rem}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:22px 22px 20px;box-shadow:var(--shadow);transition:transform .2s,box-shadow .2s;border-top:4px solid var(--line);display:flex;flex-direction:column;gap:9px}
+  .card:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(40,38,30,.1)}
+  .card .tag{align-self:flex-start;font-size:.7rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;padding:3px 10px;border-radius:999px}
+  .card h3{font-size:1.18rem;font-weight:700;line-height:1.25}
+  .card p{font-size:.97rem;color:var(--muted);font-weight:500;flex:1}
+  .soon{font-size:.78rem;font-weight:700;color:var(--muted)}
+  .c-blue .sec-num,.c-blue h2{color:var(--blue-deep)}
+  .c-blue .card{border-top-color:var(--blue)} .c-blue .tag{background:var(--blue-bg);color:var(--blue-deep)}
+  .c-green .sec-num,.c-green h2{color:var(--green-deep)}
+  .c-green .card{border-top-color:var(--green)} .c-green .tag{background:var(--green-bg);color:var(--green-deep)}
+  .c-violet .sec-num,.c-violet h2{color:var(--violet-deep)}
+  .c-violet .card{border-top-color:var(--violet)} .c-violet .tag{background:var(--violet-bg);color:var(--violet-deep)}
+
+  /* ACCORDION */
+  .acc{display:flex;flex-direction:column;gap:14px;margin-top:6px}
+  details.sub{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+  details.sub[open]{border-color:var(--blue-soft)}
+  details.sub summary{display:flex;align-items:center;gap:15px;cursor:pointer;padding:17px 20px;list-style:none;font-weight:700;font-size:1.14rem;color:var(--ink)}
+  details.sub summary::-webkit-details-marker{display:none}
+  .sub .badge{flex:0 0 auto;width:36px;height:36px;border-radius:10px;background:var(--blue-bg);color:var(--blue-deep);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.05rem}
+  .sub .chev{margin-left:auto;flex:0 0 auto;color:var(--blue);transition:transform .22s}
+  details.sub[open] .chev{transform:rotate(180deg)}
+  .sub .body{padding:2px 22px 22px 71px}
+  .sub .body>p{color:var(--muted);font-weight:500;margin-bottom:13px;font-size:1rem}
+  .sub .body ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+  .sub .body li{position:relative;padding-left:22px;font-size:1rem;font-weight:500;line-height:1.5}
+  .sub .body li::before{content:"";position:absolute;left:2px;top:8px;width:8px;height:8px;border-radius:50%;background:var(--blue)}
+  .sub .body li b{color:var(--ink);font-weight:700}
+  .timeline{display:flex;flex-direction:column}
+  .tl-item{display:flex;gap:16px;padding:11px 0;border-bottom:1px dashed var(--line);align-items:baseline}
+  .tl-item:last-child{border-bottom:none}
+  .tl-date{flex:0 0 140px;font-weight:700;color:var(--blue-deep);font-size:.92rem}
+  .tl-text{font-weight:500;font-size:.99rem}
+  .tl-item.key{background:var(--gold-bg);margin:4px -10px;padding:11px 10px;border-radius:9px;border-bottom:none}
+  .tl-item.key .tl-date,.tl-item.key .tl-text{color:var(--gold-deep);font-weight:700}
+  .src{font-size:.84rem;color:var(--muted);font-weight:600;margin-top:14px}
+  .video-slot{margin-top:16px;border:1.5px dashed var(--blue-soft);border-radius:var(--radius-sm);background:var(--blue-bg);padding:18px 20px;display:flex;align-items:center;gap:16px}
+  .video-slot .play{width:46px;height:46px;border-radius:50%;background:var(--blue);color:#fff;flex:0 0 auto;display:flex;align-items:center;justify-content:center}
+  .video-slot .vtxt b{display:block;color:var(--blue-deep);font-weight:700;font-size:1rem}
+  .video-slot .vtxt small{color:var(--muted);font-weight:500;font-size:.9rem}
+
+  /* COORDENACAO placeholder */
+  .coord-placeholder{background:var(--paper);border:2px dashed var(--gold-soft);border-radius:var(--radius);padding:60px 40px;text-align:center}
+  .coord-placeholder .cp-icon{font-size:3rem;margin-bottom:16px}
+  .coord-placeholder h3{font-size:1.4rem;font-weight:700;color:var(--gold-deep);margin-bottom:8px}
+  .coord-placeholder p{color:var(--muted);font-weight:500}
+
+  /* FOOTER */
+  footer{background:var(--ink);color:#E9E6DC;padding:40px 0 30px;margin-top:20px}
+  .foot-grid{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap;align-items:center}
+  footer .who{font-weight:700;font-size:1.05rem;color:#fff}
+  footer .meta{font-size:.9rem;color:#A8A498;font-weight:500;margin-top:4px}
+  footer .ver{font-size:.85rem;color:#C9A227;font-weight:700;border:1px solid #5a564a;border-radius:999px;padding:6px 15px}
+  .disclaimer{font-size:.82rem;color:#8E8A7E;margin-top:22px;border-top:1px solid #3d3a31;padding-top:18px;font-weight:500}
+
+  /* REVEAL */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  /* RESPONSIVE */
+  @media(max-width:900px){
+    .hero-grid{grid-template-columns:1fr;gap:30px}
+    .cards{grid-template-columns:1fr 1fr}
+    .hero h1{font-size:2.4rem}
+    .tab-nav{top:120px}
+  }
+  @media(max-width:680px){
+    .brand-inner{flex-direction:column;gap:16px;text-align:center}
+    .brand-logo img{height:78px}
+    .t1{font-size:1.15rem}
+    .cards{grid-template-columns:1fr}
+    .scale-step{font-size:1rem;height:40px}.scale-step.s5{font-size:1.3rem}
+    .sec-head{flex-direction:column;gap:4px}
+    .sub .body{padding-left:20px}
+    .tl-item{flex-direction:column;gap:2px}
+    .tl-date{flex:none}
+    .enade-links-row{flex-direction:column;align-items:center}
+    .tab-btn{font-size:.82rem;padding:10px 10px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none;transition:none}
+    html{scroll-behavior:auto}
+    .scale-step.s5{animation:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- CABEÇALHO FIXO -->
+<header class="brand">
+  <div class="brand-inner">
+    <div class="brand-logo"><img src="data:image/png;base64,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" alt="Logotipo do curso de Engenharia de Produção"></div>
+    <div class="brand-titles">
+      <p class="t1">Sejam bem-vindos à Plataforma Produção Rumo ao ENADE 5 <strong>(PRENADE5)</strong></p>
+      <p class="t2">Desenvolvido pela coordenação do curso de Engenharia de Produção via Claude</p>
+      <div class="t-meta">
+        <span>Responsáveis: Nilson Rodrigues e Jonas Gomes</span>
+        <span>Versão 1 · 26 de junho de 2026</span>
+      </div>
+    </div>
+    <div class="brand-logo"><img src="data:image/png;base64,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" alt="Logotipo da Universidade Federal do Amazonas (UFAM)"></div>
+  </div>
+</header>
+
+<!-- SEÇÃO INTRODUTÓRIA -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="reveal" style="text-align:center">
+        <p class="eyebrow" style="font-size:1.25rem;letter-spacing:2px;margin-bottom:8px">Engenharia de Produção · UFAM · ENADE 2026</p>
+        <p style="font-size:1.9rem;font-weight:800;color:var(--gold-deep);margin-bottom:8px;">Edital nº 61, de 14 de maio de 2026</p>
+        <p class="lead" style="font-size:1.4rem;max-width:100%;text-align:center;margin-bottom:22px">Documento para iniciarmos a caminhada rumo ao ENADE 5.</p>
+
+        <!-- BOTÕES LADO A LADO, MESMA ALTURA/LARGURA -->
+        <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:4px">
+          <a class="edital-btn" href="https://www.in.gov.br/web/dou/-/edital-n-61-de-14-de-maio-de-2026-705977430" target="_blank" rel="noopener" style="flex:1;min-width:220px;max-width:280px;justify-content:center;margin-top:0">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></svg>
+            Acessar o Edital no DOU
+          </a>
+          <div id="inline-count" style="flex:1;min-width:220px;max-width:280px;display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(160deg,var(--violet-bg),#fff);border:1px solid var(--violet-soft);border-radius:999px;padding:12px 22px;box-shadow:var(--shadow);font-family:'Dosis',sans-serif">
+            <span style="font-size:.85rem;font-weight:700;color:var(--violet-deep);white-space:nowrap">📅 Prova: 29/11/26</span>
+            <span style="width:1px;height:20px;background:var(--violet-soft);display:inline-block;flex-shrink:0"></span>
+            <span style="font-size:.85rem;font-weight:700;color:var(--muted);white-space:nowrap">Faltam</span>
+            <span id="d" class="dias-blink" style="font-size:1.5rem;font-weight:800;color:var(--violet-deep);line-height:1"></span>
+            <span style="font-size:.85rem;font-weight:700;color:var(--muted);white-space:nowrap">dias</span>
+          </div>
+        </div>
+
+        <p class="desemp-label">Nosso desempenho nos cinco últimos Enades</p>
+        <div class="desemp-track">
+          <div class="desemp-card n4"><div class="d-ano">Enade 2008</div><div class="d-nota nota-4">4</div><div class="d-label">Nota</div></div>
+          <div class="desemp-card n3"><div class="d-ano">Enade 2011</div><div class="d-nota nota-3">3</div><div class="d-label">Nota</div></div>
+          <div class="desemp-card n2"><div class="d-ano">Enade 2014</div><div class="d-nota nota-2">2</div><div class="d-label">Nota</div></div>
+          <div class="desemp-card n3"><div class="d-ano">Enade 2017</div><div class="d-nota nota-3">3</div><div class="d-label">Nota</div></div>
+          <div class="desemp-card n4"><div class="d-ano">Enade 2023</div><div class="d-nota nota-4">4</div><div class="d-label">Nota</div></div>
+        </div>
+
+        <div class="scale">
+          <p class="scale-label">A nota que almejamos alcançar em 2026</p>
+          <div class="scale-track" aria-label="Escala de conceito do ENADE, de 1 a 5, com a meta no 5">
+            <div class="scale-step s1">1</div>
+            <div class="scale-step s2">2</div>
+            <div class="scale-step s3">3</div>
+            <div class="scale-step s4">4</div>
+            <div class="scale-step s5">5</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NAV DE ABAS -->
+<nav class="tab-nav" aria-label="Navegação entre seções">
+  <div class="tab-nav-inner">
+    <button class="tab-btn active" onclick="showTab('licoes')">📚 Lições dos Enades Anteriores</button>
+    <button class="tab-btn" onclick="showTab('desafio')">🎯 Conhecendo Nosso Desafio</button>
+    <button class="tab-btn" onclick="showTab('aluno')">🎓 Trilha do Aluno</button>
+    <button class="tab-btn" onclick="showTab('professor')">👨‍🏫 Trilha do Professor</button>
+    <button class="tab-btn" onclick="showTab('coordenacao')">📋 Plano de Ação e Cronograma do PRENAD5</button>
+  </div>
+</nav>
+
+<!-- ===== ABA 1: LIÇÕES DOS ENADES ANTERIORES ===== -->
+<div id="tab-licoes" class="tab-panel active">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num" style="color:var(--gold-deep)">01</span><h2 style="color:var(--gold-deep)">Lições dos Enades Anteriores</h2></div>
+    <p class="sec-sub reveal">Principais estatísticas comparativas do desempenho dos alunos de EP nos Enades de 2008 a 2023.</p>
+
+    <div class="reveal">
+      <table class="stats-table">
+        <thead>
+          <tr>
+            <th>Ano</th>
+            <th>Conceito</th>
+            <th>Convocados</th>
+            <th>Presentes</th>
+            <th>Taxa de Presença</th>
+            <th>Taxa de Ausência</th>
+            <th>Resultado Geral</th>
+            <th>Formação Geral</th>
+            <th>Comp. Específico</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-n4">
+            <td class="yr">2008</td>
+            <td class="nota-4">4</td>
+            <td>61</td><td>35</td>
+            <td>75,0%</td><td>25,0%</td>
+            <td>57,7</td><td>65,8</td><td>54,9</td>
+          </tr>
+          <tr>
+            <td class="yr">2011</td>
+            <td class="nota-3">3</td>
+            <td>32</td><td>24</td>
+            <td>75,0%</td><td>25,0%</td>
+            <td>39,00</td><td>57,20</td><td>33,00</td>
+          </tr>
+          <tr class="row-n2">
+            <td class="yr">2014</td>
+            <td class="nota-2">2</td>
+            <td>53</td><td>37</td>
+            <td>69,8%</td><td>30,2%</td>
+            <td>46,00</td><td>62,20</td><td>40,60</td>
+          </tr>
+          <tr>
+            <td class="yr">2017</td>
+            <td class="nota-3">3</td>
+            <td>80</td><td>57</td>
+            <td>71,3%</td><td>28,7%</td>
+            <td>43,90</td><td>60,30</td><td>43,90</td>
+          </tr>
+          <tr class="row-n4">
+            <td class="yr">2023</td>
+            <td class="nota-4">4</td>
+            <td>51</td><td>41</td>
+            <td>80,4%</td><td>19,6%</td>
+            <td>42,80</td><td>55,40</td><td>38,50</td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;margin:-10px 0 20px;font-size:.82rem;font-weight:600">
+        <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:12px;height:12px;border-radius:3px;background:#f3effc;border:1.5px solid var(--violet-soft);display:inline-block"></span>Nota 4 — destaque positivo</span>
+        <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:12px;height:12px;border-radius:3px;background:#fff5f5;border:1.5px solid #FFCDD2;display:inline-block"></span>Nota 2 — atenção / ponto crítico</span>
+        <span style="display:inline-flex;align-items:center;gap:5px;color:var(--muted)">Notas de Resultado Geral, Formação Geral e Comp. Específico de 2008 são referentes aos concluintes</span>
+      </div>
+    </div>
+
+    <div class="enade-links reveal">
+      <p>Acesse as estatísticas e lições aprendidas pelos botões abaixo:</p>
+      <div class="enade-links-row">
+        <a class="enade-link-btn e2008" href="https://ftufam.github.io/PRENAD5_Enade2008/" target="_blank" rel="noopener">📖 Lições do Enade 2008</a>
+        <a class="enade-link-btn e2011" href="https://ftufam.github.io/PRENAD5Ano2011/" target="_blank" rel="noopener">📖 Lições do Enade 2011</a>
+        <a class="enade-link-btn e2014" href="https://ftufam.github.io/PRENADE5_Enade2014/" target="_blank" rel="noopener">📖 Lições do Enade 2014</a>
+        <a class="enade-link-btn e2017" href="https://ftufam.github.io/PRENAD_Enade2017/" target="_blank" rel="noopener">📖 Lições do Enade 2017</a>
+        <a class="enade-link-btn e2023" href="https://ftufam.github.io/PRENADE_Enade2023/" target="_blank" rel="noopener">📖 Lições do Enade 2023</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ABA 2: CONHECENDO NOSSO DESAFIO ===== -->
+<div id="tab-desafio" class="tab-panel">
+  <div class="wrap c-blue" style="background:none">
+    <div class="sec-head reveal"><span class="sec-num" style="color:var(--blue-deep)">02</span><h2 style="color:var(--blue-deep)">Conhecendo nosso desafio</h2></div>
+    <p class="sec-sub reveal">Informações para conscientizar e motivar alunos e professores rumo ao conceito 5, com base no Edital nº 61/2026 e nas boas práticas dos melhores cursos de engenharia.</p>
+    <div class="acc">
+      <details class="sub reveal" open>
+        <summary><span class="badge">1</span> Objetivos do ENADE e a importância da sua participação
+          <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="body">
+          <p>O ENADE acompanha o quanto você aprendeu em relação às diretrizes do curso e é um <b>componente curricular obrigatório</b> (Lei 10.861/2004 — SINAES). Não é uma prova qualquer: é o retrato da nossa formação.</p>
+          <ul>
+            <li>Mede <b>conteúdos, competências</b> e o nível de atualização do estudante com a realidade brasileira e mundial.</li>
+            <li>A nota do curso não é a nota de um único aluno, mas uma <b>agregação estatística das notas dos concluintes participantes</b>, com padronização e ponderação entre componentes (FG e CE).</li>
+            <li>Se não participar (Questionário do Estudante preenchido + presença na prova), <b>seu diploma pode ficar retido</b>.</li>
+            <li><b>O que nos motiva:</b> um conceito 5 valoriza o seu diploma no mercado e o nome do curso.</li>
+          </ul>
+          <div class="video-slot">
+            <span class="play"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+            <span class="vtxt"><b>Espaço para o vídeo de boas-vindas</b><small>Insira aqui o vídeo da coordenação motivando a turma para o ENADE 5.</small></span>
+          </div>
+        </div>
+      </details>
+      <details class="sub reveal">
+        <summary><span class="badge">2</span> Estrutura do exame
+          <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="body">
+          <p style="text-align:justify">Duração: <b>4 horas</b>, com questões para <b>Formação Geral</b> e <b>Componente Específico</b>.</p>
+
+          <div style="margin-top:16px;display:flex;flex-direction:column;gap:18px">
+
+            <!-- FORMAÇÃO GERAL -->
+            <div style="background:var(--green-bg);border-left:4px solid var(--green);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:16px 18px">
+              <p style="font-weight:800;font-size:1.05rem;color:var(--green-deep);margin-bottom:8px">📘 Formação Geral — 25% da nota</p>
+              <p style="text-align:justify;font-weight:500;color:var(--ink)">15 questões de múltipla escolha, com foco em <b>Direitos Humanos</b>. Cobra ética, sustentabilidade, diversidade, atualidades, leitura e escrita.</p>
+            </div>
+
+            <!-- COMPONENTE ESPECÍFICO -->
+            <div style="background:var(--blue-bg);border-left:4px solid var(--blue);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:16px 18px">
+              <p style="font-weight:800;font-size:1.05rem;color:var(--blue-deep);margin-bottom:8px">🔬 Componente Específico — 75% da nota</p>
+              <p style="text-align:justify;font-weight:500;color:var(--ink);margin-bottom:12px">30 questões de múltipla escolha e uma discursiva. Avalia o(a) concluinte com base no seguinte perfil:</p>
+              <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
+                <li style="position:relative;padding-left:22px;text-align:justify;font-size:.97rem;font-weight:500;line-height:1.55"><span style="position:absolute;left:0;font-weight:800;color:var(--blue-deep)">I.</span> Ético e responsável na concepção, implementação e melhoria de sistemas de produção de bens e serviços, envolvendo pessoas, materiais, informação, equipamentos e energia.</li>
+                <li style="position:relative;padding-left:22px;text-align:justify;font-size:.97rem;font-weight:500;line-height:1.55"><span style="position:absolute;left:0;font-weight:800;color:var(--blue-deep)">II.</span> Crítico, criativo e proativo na identificação, análise e resolução de problemas, integrando aspectos políticos, econômicos, sociais, ambientais, culturais, de segurança e de saúde no trabalho.</li>
+                <li style="position:relative;padding-left:22px;text-align:justify;font-size:.97rem;font-weight:500;line-height:1.55"><span style="position:absolute;left:0;font-weight:800;color:var(--blue-deep)">III.</span> Inovador, empreendedor e colaborativo, com visão multidisciplinar em sua atuação profissional.</li>
+                <li style="position:relative;padding-left:22px;text-align:justify;font-size:.97rem;font-weight:500;line-height:1.55"><span style="position:absolute;left:0;font-weight:800;color:var(--blue-deep)">IV.</span> Comprometido com a permanente atualização profissional e com a aplicação de adequadas tecnologias e técnicas de gestão para o aprimoramento dos sistemas de produção.</li>
+                <li style="position:relative;padding-left:22px;text-align:justify;font-size:.97rem;font-weight:500;line-height:1.55"><span style="position:absolute;left:0;font-weight:800;color:var(--blue-deep)">V.</span> Comprometido a atuar de forma isenta, com responsabilidade social e atenção ao desenvolvimento sustentável.</li>
+              </ul>
+
+              <p style="font-weight:700;color:var(--blue-deep);margin-bottom:10px">🎯 Competências e Habilidades Avaliadas</p>
+
+              <details style="background:#fff;border:1px solid var(--blue-soft);border-radius:10px;margin-bottom:8px;overflow:hidden">
+                <summary style="cursor:pointer;padding:12px 15px;font-weight:700;color:var(--blue-deep);list-style:none;display:flex;align-items:center;gap:10px">
+                  <span style="background:var(--blue);color:#fff;border-radius:6px;padding:2px 9px;font-size:.82rem">I</span>
+                  Competência I — Análise e melhoria de sistemas de produção
+                </summary>
+                <div style="padding:4px 15px 15px 15px">
+                  <p style="text-align:justify;font-size:.95rem;font-weight:500;color:var(--ink);margin-bottom:10px">Capacidade de analisar sistemas de produção, utilizando modelos e ferramentas adequadas, avaliar a viabilidade e os impactos das soluções propostas e promover melhorias efetivas e sustentáveis, considerando o contexto organizacional, social, econômico e ambiental.</p>
+                  <ul style="list-style:none;display:flex;flex-direction:column;gap:7px">
+                    <li style="padding-left:20px;position:relative;text-align:justify;font-size:.93rem;font-weight:500;line-height:1.5"><span style="position:absolute;left:0;color:var(--blue-deep);font-weight:700">1.</span> Identificar as necessidades do cliente e as características da organização para propor soluções de engenharia de produção.</li>
+                    <li style="padding-left:20px;position:relative;text-align:justify;font-size:.93rem;font-weight:500;line-height:1.5"><span style="position:absolute;left:0;color:var(--blue-deep);font-weight:700">2.</span> Aplicar modelos matemáticos, estatísticos e de simulação para representar sistemas e processos de produção.</li>
+                    <li style="padding-left:20px;position:relative;text-align:justify;font-size:.93rem;font-weight:500;line-height:1.5"><span style="position:absolute;left:0;color:var(--blue-deep);font-weight:700">3.</span> Comparar alternativas de sistemas, produtos e processos e selecionar parâmetros operacionais que assegurem viabilidade técnica e econômica da solução.</li>
+                    <li style="padding-left:20px;position:relative;text-align:justify;font-size:.93rem;font-weight:500;line-height:1.5"><span style="position:absolute;left:0;color:var(--blue-deep);font-weight:700">4.</span> Empregar normas e procedimentos de monitoramento, de controle e de auditoria.</li>
+                    <li style="padding-left:20px;position:relative;text-align:justify;font-size:.93rem;font-weight:500;line-height:1.5"><span style="position:absolute;left:0;color:var(--blue-deep);font-weight:700">5.</span> Avaliar a adoção de tecnologias e inovações nos processos produtivos e aperfeiçoamento de sistemas de produção.</li>
+                    <li style="padding-left:20px;position:relative;text-align:justify;font-size:.93rem;font-weight:500;line-height:1.5"><span style="position:absolute;left:0;color:var(--blue-deep);font-weight:700">6.</span> Interpretar dados e informações para apoiar processos de tomada de decisão.</li>
+                  </ul>
+                </div>
+              </details>
+
+              <details style="background:#fff;border:1px solid var(--blue-soft);border-radius:10px;margin-bottom:14px;overflow:hidden">
+                <summary style="cursor:pointer;padding:12px 15px;font-weight:700;color:var(--blue-deep);list-style:none;display:flex;align-items:center;gap:10px">
+                  <span style="background:var(--blue);color:#fff;border-radius:6px;padding:2px 9px;font-size:.82rem">II</span>
+                  Competência II — Atuação responsável e estratégica
+                </summary>
+                <div style="padding:4px 15px 15px 15px">
+                  <p style="text-align:justify;font-size:.95rem;font-weight:500;color:var(--ink);margin-bottom:10px">Capacidade de atuar de forma responsável, colaborativa, comunicativa e estratégica, atento à governança em contextos organizacionais e produtivos, integrando aspectos técnicos, humanos, normativos e organizacionais.</p>
+                  <ul style="list-style:none;display:flex;flex-direction:column;gap:7px">
+                    <li style="padding-left:20px;position:relative;text-align:justify;font-size:.93rem;font-weight:500;line-height:1.5"><span style="position:absolute;left:0;color:var(--blue-deep);font-weight:700">1.</span> Analisar procedimentos de implantação e estratégias de controle e melhoria de desempenho na gestão de recursos.</li>
+                    <li style="padding-left:20px;position:relative;text-align:justify;font-size:.93rem;font-weight:500;line-height:1.5"><span style="position:absolute;left:0;color:var(--blue-deep);font-weight:700">2.</span> Avaliar os impactos das soluções de engenharia nos contextos social, legal, econômico e ambiental.</li>
+                    <li style="padding-left:20px;position:relative;text-align:justify;font-size:.93rem;font-weight:500;line-height:1.5"><span style="position:absolute;left:0;color:var(--blue-deep);font-weight:700">3.</span> Analisar práticas de gestão adequadas a equipes multidisciplinares e multiculturais, considerando objetivos e restrições.</li>
+                    <li style="padding-left:20px;position:relative;text-align:justify;font-size:.93rem;font-weight:500;line-height:1.5"><span style="position:absolute;left:0;color:var(--blue-deep);font-weight:700">4.</span> Interpretar normas e dispositivos legais, com conduta ética, para aplicação no âmbito do exercício da profissão.</li>
+                    <li style="padding-left:20px;position:relative;text-align:justify;font-size:.93rem;font-weight:500;line-height:1.5"><span style="position:absolute;left:0;color:var(--blue-deep);font-weight:700">5.</span> Criar soluções integradas de gestão de pessoas, projetos e inovação, considerando ética, segurança, comunicação e melhoria contínua, em resposta a situações-problema complexas de sistemas de produção.</li>
+                  </ul>
+                </div>
+              </details>
+
+              <p style="font-weight:700;color:var(--blue-deep);margin-bottom:10px">📚 Objetos de Conhecimento Avaliados</p>
+              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px">
+                <div style="background:#fff;border:1px solid var(--blue-soft);border-radius:8px;padding:8px 12px;font-size:.9rem;font-weight:600;color:var(--blue-deep);text-align:justify;text-transform:uppercase;letter-spacing:.2px">I. Ciência e tecnologia dos materiais</div>
+                <div style="background:#fff;border:1px solid var(--blue-soft);border-radius:8px;padding:8px 12px;font-size:.9rem;font-weight:600;color:var(--blue-deep);text-align:justify;text-transform:uppercase;letter-spacing:.2px">II. Desenho universal e expressão gráfica</div>
+                <div style="background:#fff;border:1px solid var(--blue-soft);border-radius:8px;padding:8px 12px;font-size:.9rem;font-weight:600;color:var(--blue-deep);text-align:justify;text-transform:uppercase;letter-spacing:.2px">III. Eletricidade aplicada</div>
+                <div style="background:#fff;border:1px solid var(--blue-soft);border-radius:8px;padding:8px 12px;font-size:.9rem;font-weight:600;color:var(--blue-deep);text-align:justify;text-transform:uppercase;letter-spacing:.2px">IV. Engenharia econômica e custos da produção</div>
+                <div style="background:#fff;border:1px solid var(--blue-soft);border-radius:8px;padding:8px 12px;font-size:.9rem;font-weight:600;color:var(--blue-deep);text-align:justify;text-transform:uppercase;letter-spacing:.2px">V. Engenharia do produto</div>
+                <div style="background:#fff;border:1px solid var(--blue-soft);border-radius:8px;padding:8px 12px;font-size:.9rem;font-weight:600;color:var(--blue-deep);text-align:justify;text-transform:uppercase;letter-spacing:.2px">VI. Engenharia do trabalho e ergonomia</div>
+                <div style="background:#fff;border:1px solid var(--blue-soft);border-radius:8px;padding:8px 12px;font-size:.9rem;font-weight:600;color:var(--blue-deep);text-align:justify;text-transform:uppercase;letter-spacing:.2px">VII. Probabilidade e estatística</div>
+                <div style="background:#fff;border:1px solid var(--blue-soft);border-radius:8px;padding:8px 12px;font-size:.9rem;font-weight:600;color:var(--blue-deep);text-align:justify;text-transform:uppercase;letter-spacing:.2px">VIII. Estratégia e organização</div>
+                <div style="background:#fff;border:1px solid var(--blue-soft);border-radius:8px;padding:8px 12px;font-size:.9rem;font-weight:600;color:var(--blue-deep);text-align:justify;text-transform:uppercase;letter-spacing:.2px">IX. Fenômenos de transporte</div>
+                <div style="background:#fff;border:1px solid var(--blue-soft);border-radius:8px;padding:8px 12px;font-size:.9rem;font-weight:600;color:var(--blue-deep);text-align:justify;text-transform:uppercase;letter-spacing:.2px">X. Gestão ambiental</div>
+                <div style="background:#fff;border:1px solid var(--blue-soft);border-radius:8px;padding:8px 12px;font-size:.9rem;font-weight:600;color:var(--blue-deep);text-align:justify;text-transform:uppercase;letter-spacing:.2px">XI. Gestão da produção</div>
+                <div style="background:#fff;border:1px solid var(--blue-soft);border-radius:8px;padding:8px 12px;font-size:.9rem;font-weight:600;color:var(--blue-deep);text-align:justify;text-transform:uppercase;letter-spacing:.2px">XII. Logística e cadeia de suprimentos</div>
+                <div style="background:#fff;border:1px solid var(--blue-soft);border-radius:8px;padding:8px 12px;font-size:.9rem;font-weight:600;color:var(--blue-deep);text-align:justify;text-transform:uppercase;letter-spacing:.2px">XIII. Mecânica dos sólidos</div>
+                <div style="background:#fff;border:1px solid var(--blue-soft);border-radius:8px;padding:8px 12px;font-size:.9rem;font-weight:600;color:var(--blue-deep);text-align:justify;text-transform:uppercase;letter-spacing:.2px">XIV. Pesquisa operacional</div>
+                <div style="background:#fff;border:1px solid var(--blue-soft);border-radius:8px;padding:8px 12px;font-size:.9rem;font-weight:600;color:var(--blue-deep);text-align:justify;text-transform:uppercase;letter-spacing:.2px">XV. Processos de fabricação</div>
+                <div style="background:#fff;border:1px solid var(--blue-soft);border-radius:8px;padding:8px 12px;font-size:.9rem;font-weight:600;color:var(--blue-deep);text-align:justify;text-transform:uppercase;letter-spacing:.2px">XVI. Gestão da qualidade</div>
+                <div style="background:#fff;border:1px solid var(--blue-soft);border-radius:8px;padding:8px 12px;font-size:.9rem;font-weight:600;color:var(--blue-deep);text-align:justify;text-transform:uppercase;letter-spacing:.2px">XVII. Simulação de sistemas</div>
+                <div style="background:#fff;border:1px solid var(--blue-soft);border-radius:8px;padding:8px 12px;font-size:.9rem;font-weight:600;color:var(--blue-deep);text-align:justify;text-transform:uppercase;letter-spacing:.2px">XVIII. Sistemas de informação e gestão do conhecimento</div>
+                <div style="background:#fff;border:1px solid var(--blue-soft);border-radius:8px;padding:8px 12px;font-size:.9rem;font-weight:600;color:var(--blue-deep);text-align:justify;text-transform:uppercase;letter-spacing:.2px">XIX. Projeto de instalações</div>
+                <div style="background:#fff;border:1px solid var(--blue-soft);border-radius:8px;padding:8px 12px;font-size:.9rem;font-weight:600;color:var(--blue-deep);text-align:justify;text-transform:uppercase;letter-spacing:.2px">XX. Gestão de projetos</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </details>
+      
+      <details class="sub reveal">
+        <summary><span class="badge">3</span> O que o aluno deve fazer?
+          <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="body">
+          <p>Sua participação é importante. Cumpra cada passo:</p>
+          <ul>
+            <li><b>Leia os comunicados semanais</b> do curso de EP.</li>
+            <li><b>Conheça o Plano de Ação e Cronograma do PRENAD5</b>, pois há ações para a coordenação, professores e alunos.</li>
+            <li><b>Confirme com a coordenação</b> se você está habilitado e inscrito.</li>
+            <li><b>Preencha o cadastro e o Questionário do Estudante</b> nos prazos do Plano de Ação e Cronograma do PRENAD5 — é obrigatório.</li>
+            <li><b>Explore o material</b> colocado na Trilha do Aluno.</li>
+            <li><b>Estude ao longo do curso:</b> resolva provas anteriores, treine as discursivas e a gestão do tempo.</li>
+            <li><b>Consulte o local de prova</b> (09 a 29/11) e leve documento oficial com foto.</li>
+            <li><b>Compareça em 29/11</b> e faça a prova com dedicação.</li>
+          </ul>
+        </div>
+      </details>
+      <details class="sub reveal">
+        <summary><span class="badge">4</span> O que a coordenação está fazendo?
+          <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="body">
+          <p>A coordenação lidera e prepara o terreno para a nota 5:</p>
+          <ul>
+            <li><b>Realizar diagnósticos</b> envolvendo o desempenho dos alunos nos últimos 4 Enades.</li>
+            <li><b>Elaborar e divulgar</b> a Plataforma Produção Rumo ao ENADE Nota 5 (PRENAD5).</li>
+            <li><b>Elaborar e atualizar</b> o Plano de Ação e Cronograma do PRENAD5.</li>
+            <li><b>Comunicar e sensibilizar</b> os professores e alunos com antecedência, criando pertencimento.</li>
+            <li><b>Organizar simulados</b> e usar os resultados como diagnóstico para intervenções pedagógicas, etc.</li>
+          </ul>
+        </div>
+      </details>
+      <details class="sub reveal">
+        <summary><span class="badge">5</span> Como os professores podem ajudar
+          <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="body">
+          <p>O professor é peça-chave — e a preparação acontece na sala de aula, o ano inteiro:</p>
+          <ul>
+            <li><b>Leia os comunicados semanais</b> da coordenação do Curso de EP.</li>
+            <li><b>Conheça o Plano de Ação e Cronograma do PRENAD5</b>, pois há ações para a coordenação, professores e alunos.</li>
+            <li><b>Estude cada aprendizado</b> descrito nos relatórios <b>Lições do Enade 2008, 2011, 2014, 2017 e 2023</b>, disponíveis na seção Lições dos Enades Anteriores, a fim de verificar como incorporar em suas disciplinas questões do ENADE, especialmente em provas e disciplinas em que nossos alunos tiveram avaliação mais baixa.</li>
+            <li><b>Explore o material</b> colocado na Trilha do Aluno e forneça recomendações de melhorias ou de incorporação de novos materiais para a coordenação.</li>
+            <li><b>Aplique metodologias ativas</b> com abordagem de aplicação prática.</li>
+            <li><b>Estimule a aprendizagem</b> baseada em problemas e estudos de caso reais, com discussão e resolução de questões no estilo ENADE.</li>
+            <li><b>Dilua a preparação</b> ao longo do curso, em vez de concentrar tudo na véspera.</li>
+            <li><b>Reforce a Formação Geral:</b> leitura, interpretação e produção de texto também valem nota, pois nossos alunos têm apresentado déficits nessas áreas.</li>
+            <li><b>Aplique simulados</b> e forneça feedback por área de conhecimento.</li>
+            <li><b>Motive e engaje os alunos:</b> mostrar o valor do exame e combater o desinteresse no dia da prova.</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ABA 3: TRILHA DO ALUNO ===== -->
+<div id="tab-aluno" class="tab-panel">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num" style="color:var(--green-deep)">03</span><h2 style="color:var(--green-deep)">Trilha do Aluno</h2></div>
+    <p class="sec-sub reveal">Onde o aluno estuda, treina e se prepara, ao longo do curso e não só na véspera.</p>
+    <div class="cards">
+      <article class="card reveal" style="border-top-color:var(--green)">
+        <span class="tag" style="background:var(--green-bg);color:var(--green-deep)">Treino</span>
+        <h3>Simulados no formato real</h3>
+        <p>Provas que reproduzem o estilo, o tempo e a divisão do ENADE, com cronômetro, gabarito e correção comentada.</p>
+        <span class="soon">Módulo de simulados · a publicar</span>
+      </article>
+      <article class="card reveal" style="border-top-color:var(--green)">
+        <span class="tag" style="background:var(--green-bg);color:var(--green-deep)">Questões</span>
+        <h3>Banco de questões</h3>
+        <p>Questões de provas anteriores filtráveis por área e subárea da ABEPRO, para estudar exatamente o que você precisa.</p>
+        <span class="soon">Banco · a publicar</span>
+      </article>
+      <article class="card reveal" style="border-top-color:var(--green)">
+        <span class="tag" style="background:var(--green-bg);color:var(--green-deep)">Plano</span>
+        <h3>Cronograma de estudos</h3>
+        <p>Uma trilha distribuída por mês até novembro, para a preparação ser uma maratona organizada, e não uma corrida de véspera.</p>
+        <span class="soon">Cronograma · a publicar</span>
+      </article>
+      <article class="card reveal" style="border-top-color:var(--green)">
+        <span class="tag" style="background:var(--green-bg);color:var(--green-deep)">25% da nota</span>
+        <h3>Formação geral</h3>
+        <p>A parte que muita gente esquece: leitura e interpretação, redação, atualidades, ética, sustentabilidade e diversidade.</p>
+        <span class="soon">Conteúdos · a publicar</span>
+      </article>
+      <article class="card reveal" style="border-top-color:var(--green)">
+        <span class="tag" style="background:var(--green-bg);color:var(--green-deep)">Cabeça boa</span>
+        <h3>Motivação e bem-estar</h3>
+        <p>Gestão de tempo na prova de 4 horas, controle de ansiedade e depoimentos de quem já passou por isso.</p>
+        <span class="soon">Dicas · a publicar</span>
+      </article>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ABA 4: TRILHA DO PROFESSOR ===== -->
+<div id="tab-professor" class="tab-panel">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num" style="color:var(--violet-deep)">04</span><h2 style="color:var(--violet-deep)">Trilha do Professor</h2></div>
+    <p class="sec-sub reveal">As ferramentas de gestão que sustentam a nota do curso como um todo.</p>
+    <div class="cards">
+      <article class="card reveal" style="border-top-color:var(--violet)">
+        <span class="tag" style="background:var(--violet-bg);color:var(--violet-deep)">Currículo</span>
+        <h3>Alinhamento curricular</h3>
+        <p>Uma matriz que cruza cada disciplina com as áreas e subáreas cobradas no exame, deixando as lacunas à vista.</p>
+        <span class="soon">Matriz · a publicar</span>
+      </article>
+      <article class="card reveal" style="border-top-color:var(--violet)">
+        <span class="tag" style="background:var(--violet-bg);color:var(--violet-deep)">Dados</span>
+        <h3>Diagnóstico por área</h3>
+        <p>O desempenho dos simulados por turma e por área, para direcionar a intervenção pedagógica onde ela rende mais.</p>
+        <span class="soon">Painel · a publicar</span>
+      </article>
+      <article class="card reveal" style="border-top-color:var(--violet)">
+        <span class="tag" style="background:var(--violet-bg);color:var(--violet-deep)">Ensino</span>
+        <h3>Repositório pedagógico</h3>
+        <p>Orientações de metodologias ativas, estudos de caso e modelos de questão no padrão ENADE para usar em sala.</p>
+        <span class="soon">Repositório · a publicar</span>
+      </article>
+      <article class="card reveal" style="border-top-color:var(--violet)">
+        <span class="tag" style="background:var(--violet-bg);color:var(--violet-deep)">Gestão</span>
+        <h3>Checklist do ciclo</h3>
+        <p>Inscrição de concluintes e ingressantes, conferência do enquadramento e acompanhamento da regularidade, passo a passo.</p>
+        <span class="soon">Checklist · a publicar</span>
+      </article>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ABA 5: PLANO DA COORDENAÇÃO ===== -->
+<div id="tab-coordenacao" class="tab-panel">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num" style="color:var(--gold-deep)">05</span><h2 style="color:var(--gold-deep)">Plano de Ação e Cronograma do PRENAD5 <span style="font-size:1.1rem;font-weight:600;color:var(--muted)">(V1 - 24/06/26)</span></h2></div>
+    <p class="sec-sub reveal">Plano de Ação e Cronograma do PRENAD5.</p>
+    <div class="reveal"><div style="display:flex;justify-content:flex-end;margin-bottom:12px">
+  <button onclick="imprimirPlano()" style="display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:#fff;font-family:'Dosis',sans-serif;font-size:.95rem;font-weight:700;border:none;cursor:pointer;padding:11px 22px;border-radius:999px;box-shadow:0 4px 14px rgba(201,162,39,.35);transition:transform .18s,background .18s" onmouseover="this.style.background='var(--gold-deep)';this.style.transform='translateY(-2px)'" onmouseout="this.style.background='var(--gold)';this.style.transform='none'">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+    Imprimir / Baixar PDF
+  </button>
+</div>
+<div id="plano-tabela" style="margin-top:4px;overflow-x:auto;border-radius:var(--radius);box-shadow:var(--shadow)">
+  <!-- LEGENDA -->
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;font-size:.9rem;font-weight:600">
+    <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:11px;height:11px;border-radius:50%;background:#2E7D32;display:inline-block"></span>Concluído</span>
+    <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:11px;height:11px;border-radius:50%;background:#F57F17;display:inline-block"></span>Em Andamento</span>
+    <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:11px;height:11px;border-radius:50%;background:#1565C0;display:inline-block"></span>Planejado</span>
+    <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:11px;height:11px;border-radius:50%;background:#E65100;display:inline-block"></span>A Checar</span>
+    <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:11px;height:11px;border-radius:50%;background:#757575;display:inline-block"></span>Não Aplicado</span>
+  </div>
+  <table style="width:100%;border-collapse:collapse;background:var(--paper);font-family:'Dosis',sans-serif;min-width:900px;font-size:1rem">
+    <thead>
+      <tr style="background:linear-gradient(90deg,var(--gold-deep),var(--gold));color:#fff">
+        <th style="padding:13px 14px;text-align:center;font-size:.92rem;font-weight:700;letter-spacing:.4px;white-space:nowrap">#</th>
+        <th style="padding:13px 14px;text-align:left;font-size:.92rem;font-weight:700;letter-spacing:.4px">Ação / Atividade</th>
+        <th style="padding:12px 14px;text-align:center;font-size:.92rem;font-weight:700;letter-spacing:.4px">Responsável</th>
+        <th style="padding:12px 14px;text-align:center;font-size:.92rem;font-weight:700;letter-spacing:.4px;white-space:nowrap">Período</th>
+        <th style="padding:12px 14px;text-align:center;font-size:.92rem;font-weight:700;letter-spacing:.4px">Status</th>
+        <th style="padding:12px 14px;text-align:center;font-size:.92rem;font-weight:700;letter-spacing:.4px">Acesso</th>
+      </tr>
+    </thead>
+    <tbody style="border:1px solid var(--line)">
+      <tr style="background:#F9FFF9">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">1</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Alterar município de prova em mobilidade acadêmica ou dos estudantes vinculados a curso oferecido na modalidade de Educação a Distância (EaD)</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Coordenador de curso e PI</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">19 a 27/05/2026</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#E8F5E9;color:#2E7D32;border:1px solid #A5D6A7;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">CONCLUÍDO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://enade.inep.gov.br/enade/#!/index" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🔗 Portal ENADE</a></td>
+    </tr><tr style="background:#F9FFF9">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">2</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Inscrever os estudantes concluintes habilitados</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Coordenador de curso e PI</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">27/04/2026 a 18/05/2026</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#E8F5E9;color:#2E7D32;border:1px solid #A5D6A7;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">CONCLUÍDO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://enade.inep.gov.br/enade/#!/index" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🔗 Portal ENADE</a></td>
+    </tr><tr style="background:#F9FFF9">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">3</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Retificar ações relativas ao enquadramento e às inscrições de estudantes concluintes habilitados</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Coordenador de curso e PI</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">19/05/2026 a 27/05/2026</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#E8F5E9;color:#2E7D32;border:1px solid #A5D6A7;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">CONCLUÍDO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://enade.inep.gov.br/enade/#!/index" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🔗 Portal ENADE</a></td>
+    </tr><tr style="background:#fff">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">4</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Indicar curso (área de avaliação) pelo estudante concluinte habilitado com mais de uma inscrição</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Estudante (concluinte)</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">12/06/2026</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#FFF3E0;color:#E65100;border:1px solid #FFCC80;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">A CHECAR</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://enade.inep.gov.br/enade/#!/index" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🔗 Portal ENADE</a></td>
+    </tr><tr style="background:#F9FFF9">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">5</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Fazer diagnóstico, organizar relatórios e preparar lições aprendidas nos Enades 2008, 2011, 2014, 2017 e 2023</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Coordenação de EP</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">10/06/2026</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#E8F5E9;color:#2E7D32;border:1px solid #A5D6A7;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">CONCLUÍDO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://www.engproducao.ufam.edu.br/ opção PRENAD5" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🌐 PRENAD5 / Site EP</a></td>
+    </tr><tr style="background:#FFFDF0">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">6</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Desenvolver, disponibilizar no site de EP, divulgar e aperfeiçoar a Plataforma Produção Rumo ao ENADE Nota 5 (PRENAD5)</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Coordenação de EP</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">20/06/26 a 02/08/27</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#FFF8E1;color:#F57F17;border:1px solid #FFE082;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">EM ANDAMENTO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://www.engproducao.ufam.edu.br/ opção PRENAD5" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🌐 PRENAD5 / Site EP</a></td>
+    </tr><tr style="background:#FFFDF0">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">7</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Divulgar as ações do curso em relação ao ENADE via Comunicado Semanal</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Coordenação de EP</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">01/04 a 02/08/27</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#FFF8E1;color:#F57F17;border:1px solid #FFE082;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">EM ANDAMENTO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://www.engproducao.ufam.edu.br/ opção Comunicados Semanais" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🌐 PRENAD5 / Site EP</a></td>
+    </tr><tr style="background:#FFFDF0">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">8</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Solicitar atendimento especializado e tratamento pelo nome social</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Estudante</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">01/06 a 24/07/2026</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#FFF8E1;color:#F57F17;border:1px solid #FFE082;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">EM ANDAMENTO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://enade.inep.gov.br/enade/#!/index" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🔗 Portal ENADE</a></td>
+    </tr><tr style="background:#fff">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">9</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Divulgar resultado da solicitação de atendimento especializado</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Inep</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">31/07/2026</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">PLANEJADO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://enade.inep.gov.br/enade/#!/index" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🔗 Portal ENADE</a></td>
+    </tr><tr style="background:#fff">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">10</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Entrar com recurso da solicitação de atendimento especializado</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Estudante</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">07/08/2026</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">PLANEJADO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://enade.inep.gov.br/enade/#!/index" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🔗 Portal ENADE</a></td>
+    </tr><tr style="background:#fff">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">11</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Divulgar resultado do recurso da solicitação de atendimento especializado</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Inep</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">14/08/2026</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">PLANEJADO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://enade.inep.gov.br/enade/#!/index" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🔗 Portal ENADE</a></td>
+    </tr><tr style="background:#FFFDF0">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">12</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Preencher Questionário do Estudante (concluintes)</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Estudante (concluinte)</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">01/06 a 29/11/2026</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#FFF8E1;color:#F57F17;border:1px solid #FFE082;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">EM ANDAMENTO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://enade.inep.gov.br/enade/#!/index" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🔗 Portal ENADE</a></td>
+    </tr><tr style="background:#fff">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">13</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Inscrever os estudantes ingressantes habilitados</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Coordenador de curso e PI</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">17/08/2026 a 17/09/2026</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">PLANEJADO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://enade.inep.gov.br/enade/#!/index" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🔗 Portal ENADE</a></td>
+    </tr><tr style="background:#fff">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">14</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Realizar a 1ª Semana de Preparação para o ENADE 2026 com Aula Inaugural e Simulado 1</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Coordenação, Professores e Alunos</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">24 a 28/08/2026</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">PLANEJADO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://www.engproducao.ufam.edu.br/ opção PRENAD5" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🌐 PRENAD5 / Site EP</a></td>
+    </tr><tr style="background:#fff">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">15</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Retificar as inscrições dos estudantes ingressantes habilitados</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Coordenador de curso e PI</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">18/09/2026 a 30/09/2026</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">PLANEJADO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://enade.inep.gov.br/enade/#!/index" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🔗 Portal ENADE</a></td>
+    </tr><tr style="background:#fff">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">16</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Incorporar e realizar exercícios referentes a questões do ENADE em suas disciplinas</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Professores</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">10/08 a 12/12/2026</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">PLANEJADO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://www.engproducao.ufam.edu.br/ opção PRENAD5" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🌐 PRENAD5 / Site EP</a></td>
+    </tr><tr style="background:#fff">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">17</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Estudar e participar das ações de preparação para o ENADE 2026</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Estudantes</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">10/08 a 12/12/2026</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">PLANEJADO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://www.engproducao.ufam.edu.br/ opção PRENAD5" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🌐 PRENAD5 / Site EP</a></td>
+    </tr><tr style="background:#FAFAFA">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">18</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Indicar IES de Fronteira</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">PI</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">12/08/2026</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#F5F5F5;color:#757575;border:1px solid #E0E0E0;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">NÃO APLICADO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://enade.inep.gov.br/enade/#!/index" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🔗 Portal ENADE</a></td>
+    </tr><tr style="background:#FAFAFA">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">19</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Solicitar correção da questão discursiva em língua espanhola ou inglesa pelo estudante vinculado à IES de Fronteira</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Estudante (concluinte)</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">13 a 21/08/2026</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#F5F5F5;color:#757575;border:1px solid #E0E0E0;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">NÃO APLICADO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://enade.inep.gov.br/enade/#!/index" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🔗 Portal ENADE</a></td>
+    </tr><tr style="background:#fff">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">20</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Preencher o Questionário do Estudante Ingressante</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Estudante (ingressante)</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">01/10 a 18/12/2026</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">PLANEJADO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://enade.inep.gov.br/enade/#!/index" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🔗 Portal ENADE</a></td>
+    </tr><tr style="background:#fff">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">21</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Preencher o Questionário do Coordenador de Curso</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Coordenador de curso</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">30/11/2026 a 04/12/2026</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">PLANEJADO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://enade.inep.gov.br/enade/#!/index" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🔗 Portal ENADE</a></td>
+    </tr><tr style="background:#fff">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">22</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Divulgar os locais de prova (Cartão de Confirmação da Inscrição)</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Inep</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">29/11/2026</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">PLANEJADO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://enade.inep.gov.br/enade/#!/index" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🔗 Portal ENADE</a></td>
+    </tr><tr style="background:#fff">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">23</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Realizar a 2ª Semana de Preparação para o ENADE 2026 com orientações e Simulado 2</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Coordenação, Professores e Alunos</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">09 a 13/11/2026</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">PLANEJADO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://www.engproducao.ufam.edu.br/ opção PRENAD5" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🌐 PRENAD5 / Site EP</a></td>
+    </tr><tr style="background:#fff">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">24</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Divulgar e premiar alunos destaques do processo de preparação para o ENADE 2026</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Coordenação e Professores</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">17/11/2026 (Dia Internacional dos Estudantes)</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">PLANEJADO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://www.engproducao.ufam.edu.br/ opção PRENAD5" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🌐 PRENAD5 / Site EP</a></td>
+    </tr><tr style="background:#fff">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">25</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Participar da Prova</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Estudantes inscritos</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">29/11/2026</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">PLANEJADO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://www.engproducao.ufam.edu.br/ opção PRENAD5" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🌐 PRENAD5 / Site EP</a></td>
+    </tr><tr style="background:#fff">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">26</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Registrar a presença na Prova pela IES</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Coordenador de curso</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">03/12/2026 a 11/01/2027</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">PLANEJADO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://enade.inep.gov.br/enade/#!/index" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🔗 Portal ENADE</a></td>
+    </tr><tr style="background:#fff">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">27</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Divulgar os cadernos de prova e dos gabaritos preliminares das provas objetivas</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Inep</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">Até 11/12/2026</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">PLANEJADO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://enade.inep.gov.br/enade/#!/index" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🔗 Portal ENADE</a></td>
+    </tr><tr style="background:#fff">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">28</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Divulgar a relação de estudantes em situação regular</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Inep</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">12/01/2027</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">PLANEJADO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://enade.inep.gov.br/enade/#!/index" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🔗 Portal ENADE</a></td>
+    </tr><tr style="background:#fff">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">29</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Registrar a Declaração de Responsabilidade da IES em relação ao Exame: demais declarações</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Coordenador de curso</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">A partir de 13/01/2027</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">PLANEJADO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://enade.inep.gov.br/enade/#!/index" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🔗 Portal ENADE</a></td>
+    </tr><tr style="background:#fff">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">30</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Solicitar dispensa de participação na prova pelo estudante</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Estudante</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">13/01 a 05/02/2027</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">PLANEJADO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://enade.inep.gov.br/enade/#!/index" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🔗 Portal ENADE</a></td>
+    </tr><tr style="background:#fff">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">31</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Solicitar dispensa de participação na prova pela IES</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Coordenador de curso</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">13/01 a 05/02/2027</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">PLANEJADO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://enade.inep.gov.br/enade/#!/index" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🔗 Portal ENADE</a></td>
+    </tr><tr style="background:#fff">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">32</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Analisar e deliberar, por parte da IES, as solicitações de dispensa dos estudantes</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Coordenador de curso</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">14/01 a 16/02/2027</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">PLANEJADO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://enade.inep.gov.br/enade/#!/index" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🔗 Portal ENADE</a></td>
+    </tr><tr style="background:#fff">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">33</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Analisar e deliberar, pelo Inep, as solicitações de dispensa da IES</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Inep</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">14/01 a 16/02/2027</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">PLANEJADO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://enade.inep.gov.br/enade/#!/index" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🔗 Portal ENADE</a></td>
+    </tr><tr style="background:#fff">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">34</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Entrar com recurso das solicitações de dispensa do estudante indeferidas pela IES</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Estudante</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">17/02 a 03/03/2027</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">PLANEJADO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://enade.inep.gov.br/enade/#!/index" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🔗 Portal ENADE</a></td>
+    </tr><tr style="background:#fff">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">35</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Entrar com recurso das solicitações de dispensa da IES indeferidas pelo Inep</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Coordenador de curso</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">17/02 a 03/03/2027</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">PLANEJADO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://enade.inep.gov.br/enade/#!/index" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🔗 Portal ENADE</a></td>
+    </tr><tr style="background:#fff">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">36</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Divulgar resultado dos recursos das solicitações de dispensa do estudante e da IES</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Inep</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">Até 22/03/2027</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">PLANEJADO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://enade.inep.gov.br/enade/#!/index" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🔗 Portal ENADE</a></td>
+    </tr><tr style="background:#fff">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">37</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Divulgar os gabaritos finais das provas objetivas e das expectativas de respostas das questões discursivas</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Inep</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">Até 30/04/2027</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">PLANEJADO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://enade.inep.gov.br/enade/#!/index" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🔗 Portal ENADE</a></td>
+    </tr><tr style="background:#fff">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">38</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Divulgar os resultados: Boletim de Desempenho; Microdados; Conceito Enade</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Inep</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">A partir de 30/08/2027</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">PLANEJADO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://enade.inep.gov.br/enade/#!/index" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🔗 Portal ENADE</a></td>
+    </tr><tr style="background:#fff">
+      <td style="text-align:center;font-weight:800;color:var(--gold-deep);font-size:.9rem;padding:10px 12px">39</td>
+      <td style="padding:10px 14px;font-size:.97rem;font-weight:500;line-height:1.5;color:var(--ink)">Regularizar estudantes por ato do Inep</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--muted);text-align:center;white-space:nowrap">Inep</td>
+      <td style="padding:10px 12px;font-size:.9rem;font-weight:600;color:var(--ink);text-align:center;white-space:nowrap">02/08/2027</td>
+      <td style="padding:10px 12px;text-align:center"><span style="display:inline-block;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9;border-radius:999px;padding:3px 11px;font-size:.86rem;font-weight:700;white-space:nowrap">PLANEJADO</span></td>
+      <td style="padding:10px 12px;text-align:center"><a href="https://enade.inep.gov.br/enade/#!/index" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:600;font-size:.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px">🔗 Portal ENADE</a></td>
+    </tr>
+    </tbody>
+  </table>
+</div></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <p class="who">PRENADE5 — Produção em Alta Performance</p>
+        <p class="meta">Coordenação do curso de Engenharia de Produção · Universidade Federal do Amazonas</p>
+        <p class="meta">Responsáveis: Nilson Rodrigues e Jonas Gomes · Desenvolvido via Claude</p>
+      </div>
+      <div class="ver">Versão 1 · 26/06/2026</div>
+    </div>
+    <p class="disclaimer">Plataforma em construção. Os blocos marcados como "a publicar" são a estrutura prevista, a ser preenchida pela coordenação. As datas e o formato do exame seguem o Edital Inep nº 61/2026 e devem ser confirmados no portal oficial.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // COUNTDOWN
+  // COUNTDOWN — atualiza a cada hora (suficiente para contagem em dias)
+  var _target = new Date(2026,10,29,0,0,0).getTime();
+  var _d=document.getElementById('d');
+  function _tick(){
+    var now=Date.now(), diff=_target-now;
+    if(diff<0){diff=0;}
+    var dd=Math.floor(diff/86400000);
+    if(_d) _d.textContent=dd;
+  }
+  _tick();
+  // atualiza à meia-noite automaticamente
+  function _agendarAtualizacao(){
+    var agora=new Date(), amanha=new Date(agora);
+    amanha.setDate(amanha.getDate()+1);
+    amanha.setHours(0,0,5,0);
+    var ms=amanha-agora;
+    setTimeout(function(){_tick();_agendarAtualizacao();},ms);
+  }
+  _agendarAtualizacao();
+
+  // IMPRIMIR / PDF
+  window.imprimirPlano = function(){
+    var conteudo = document.getElementById('plano-tabela');
+    if(!conteudo){window.print();return;}
+    var win = window.open('','_blank','width=1100,height=800');
+    win.document.write('<html><head><title>Plano de Ação e Cronograma PRENAD5</title>');
+    win.document.write('<style>');
+    win.document.write('body{font-family:Dosis,Arial,sans-serif;font-size:13px;padding:24px;color:#2A2A26;}');
+    win.document.write('h1{font-size:18px;color:#9C7B16;margin-bottom:4px;}');
+    win.document.write('p.sub{font-size:12px;color:#6B6A62;margin-bottom:18px;}');
+    win.document.write('table{width:100%;border-collapse:collapse;}');
+    win.document.write('th{background:#9C7B16;color:#fff;padding:9px 11px;font-size:12px;text-align:left;}');
+    win.document.write('td{padding:8px 11px;border-bottom:1px solid #E7E3D6;font-size:12px;vertical-align:top;}');
+    win.document.write('tr:nth-child(even) td{background:#FAFAF6;}');
+    win.document.write('.badge{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:700;}');
+    win.document.write('@media print{@page{size:A4 landscape;margin:15mm;}}');
+    win.document.write('</style></head><body>');
+    win.document.write('<h1>Plano de Ação e Cronograma do PRENAD5</h1>');
+    win.document.write('<p class="sub">Coordenação do Curso de Engenharia de Produção — FT/UFAM · Impresso em: '+new Date().toLocaleDateString('pt-BR')+'</p>');
+    win.document.write(conteudo.innerHTML);
+    win.document.write('</body></html>');
+    win.document.close();
+    win.focus();
+    setTimeout(function(){win.print();},600);
+  };
+
+  // TABS
+  window.showTab = function(id){
+    document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});
+    document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+    document.getElementById('tab-'+id).classList.add('active');
+    event.currentTarget.classList.add('active');
+  };
+
+  // REVEAL
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}); 
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(function(el,i){
+    el.style.transitionDelay=(Math.min(i,6)*40)+'ms'; io.observe(el);
+  });
+})();
+</script>
+</body>
+</html>
