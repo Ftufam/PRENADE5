@@ -338,12 +338,28 @@ a.tab-btn{display:inline-flex;align-items:center;justify-content:center}
   max-width:1120px;margin:0 auto;padding:12px 24px}
 .tab-evt{font-size:.95rem !important;font-weight:900 !important;padding:12px 22px !important;
   border-radius:999px !important;border:2px solid transparent !important;color:#fff !important;
-  box-shadow:0 4px 12px rgba(40,38,30,.18) !important}
+  box-shadow:0 4px 12px rgba(40,38,30,.18)}
 .tab-evt-a{background:linear-gradient(135deg,#1B5E20,#2E7D32) !important}
 .tab-evt-b{background:linear-gradient(135deg,#4A148C,#6A1B9A) !important}
 .tab-evt:hover{transform:translateY(-2px);filter:brightness(1.08);color:#fff !important}
+/* Nenhuma destas propriedades pode levar !important em .tab-evt,
+   senão o !important vence sobre a animação e o efeito some. */
+@keyframes evt-blink{
+  0%   {box-shadow:0 0 0 0 rgba(201,162,39,.85), 0 4px 12px rgba(40,38,30,.20);
+        transform:scale(1);      filter:brightness(1)}
+  50%  {box-shadow:0 0 0 10px rgba(201,162,39,0), 0 8px 24px rgba(27,94,32,.55);
+        transform:scale(1.055);  filter:brightness(1.22)}
+  100% {box-shadow:0 0 0 0 rgba(201,162,39,0), 0 4px 12px rgba(40,38,30,.20);
+        transform:scale(1);      filter:brightness(1)}}
+@keyframes evt-arrow{0%,100%{opacity:1}50%{opacity:.25}}
+.tab-evt-blink{animation:evt-blink 1.25s ease-in-out infinite;position:relative}
+.tab-evt-blink .evt-live{display:inline-block;animation:evt-arrow 1.25s ease-in-out infinite}
+.tab-evt-blink:hover{animation-play-state:paused;transform:translateY(-2px)}
+@media(prefers-reduced-motion:reduce){
+  .tab-evt-blink,.tab-evt-blink .evt-live{animation:none}
+  .tab-evt-blink{box-shadow:0 0 0 3px rgba(201,162,39,.6),0 4px 12px rgba(40,38,30,.2)}}
 .tab-evt.active{border-color:var(--gold) !important;
-  box-shadow:0 5px 16px rgba(201,162,39,.45) !important}
+  box-shadow:0 5px 16px rgba(201,162,39,.45)}
 .evt-h{font-family:Dosis,sans-serif;font-weight:900;font-size:1.5rem;margin:0 0 6px;
   text-transform:uppercase;letter-spacing:1px}
 .evt-sub{font-family:Dosis,sans-serif;font-size:.9rem;color:#6B6A62;margin:0 0 22px}
@@ -503,7 +519,7 @@ a.tab-btn{display:inline-flex;align-items:center;justify-content:center}
 <!-- ===== EVENTOS ===== -->
 <nav class="tab-nav2" aria-label="Eventos do PRENADE5">
   <div class="tab-nav2-inner">
-    <button class="tab-btn tab-evt tab-evt-a" onclick="showTab('semanas')">&#128197; SEMANAS PREPARAT&Oacute;RIAS PARA O ENADE 2026</button>
+    <a class="tab-btn tab-evt tab-evt-a tab-evt-blink" href="https://ftufam.github.io/PRENADE5_1aSemanadepreparacaoparaoenade5/" target="_blank" rel="noopener noreferrer" title="Abre a programação completa em nova aba">&#128197; 1&ordf; SEMANA PREPARAT&Oacute;RIA PARA O ENADE 2026 <span class="evt-live">&#8599;</span></a>
     <button class="tab-btn tab-evt tab-evt-b" onclick="showTab('samep')">&#127891; XVI SAMEP</button>
   </div>
 </nav>
@@ -3156,29 +3172,6 @@ a.tab-btn{display:inline-flex;align-items:center;justify-content:center}
   </div>
 </div>
 
-<div id="tab-semanas" class="tab-panel">
-  <div class="wrap">
-    <h2 class="evt-h" style="color:#1B5E20">&#128197; Semanas Preparatórias para o ENADE 2026</h2>
-    <p class="evt-sub">Duas semanas de atividades, sempre das <b>18h às 21h30</b>. A participação conta pontos para as equipes do Edital 002/2026.</p>
-    <div class="evt-card" style="--ac:#1B5E20">
-      <h3>1ª Semana de Preparação</h3>
-      <p class="evt-when">24 a 28 de agosto de 2026 &middot; 18h às 21h30</p>
-      <div class="evt-day"><div class="evt-date">24/08 · Seg</div><div class="evt-what">Abertura Magna com o Presidente da ABEPRO, homenagem aos professores e lançamento oficial do PRENADE5. Em seguida, defesa pública e avaliação dos TCC 1. <b>Auditório Rio Javari e hall.</b></div></div><div class="evt-day"><div class="evt-date">25/08 · Ter</div><div class="evt-what">Noite com os Embaixadores da Produção e sorteio de formação das equipes. <b>Sala 6.</b></div></div><div class="evt-day"><div class="evt-date">26/08 · Qua</div><div class="evt-what">Noite dos Jogos, com os egresso(a)s. <b>Sala 6.</b></div></div><div class="evt-day"><div class="evt-date">27/08 · Qui</div><div class="evt-what">Noite do Simuladão: questões discursivas e de múltipla escolha das áreas prioritárias. <b>Sala 6.</b></div></div><div class="evt-day"><div class="evt-date">28/08 · Sex</div><div class="evt-what">Palestra Magna (Indústria 4.0 aplicada à EP), Noite de Encerramento e Premiação. <b>Auditório Rio Javari.</b></div></div>
-      <p class="evt-note">Programação preliminar, conforme o Edital 002/2026. Alterações são divulgadas no Comunicado Semanal (COMSEP-FT) e no site do curso.</p>
-    </div>
-    <div class="evt-card" style="--ac:#4A148C">
-      <h3>2ª Semana de Preparação</h3>
-      <p class="evt-when">05 a 08 de outubro de 2026 &middot; junto com o XVI SAMEP</p>
-      <div class="evt-what">Encerra o ciclo de avaliação das equipes, que considera as ações realizadas entre <b>17/08 e 07/10/2026</b>. A premiação final do Prêmio Mérito Acadêmico ENADE 2026 acontece no último dia do evento.</div>
-      <ul class="evt-list"><li>Equipes Ouro, Prata e Bronze recebem medalha, certificado, livros, direito a minicurso no XVI SAMEP e até 2 créditos de AACC.</li><li>Destaques individuais na Maratona, na Noite dos Jogos e dos Simuladões e no maior número de ações executadas.</li></ul>
-    </div>
-    <div class="evt-card" style="--ac:#9C7B16">
-      <h3>Como participar</h3>
-      <p class="evt-when">Registre tudo no Meu Diário de Bordo</p>
-      <ul class="evt-list"><li>Cadastro individual e inscrição nas atividades e jogos: a partir de <b>17 de agosto de 2026</b> (confira os prazos de cada edital).</li><li>1º período de registro: <b>17 a 27/08/2026</b> &nbsp;·&nbsp; 2º período: <b>28/08 a 07/10/2026</b>.</li><li>Anexe comprovantes de cada atividade: fotos, links, PDF e outros.</li><li>Valem as atividades organizadas pela coordenação e também as criadas pela sua equipe.</li></ul>
-    </div>
-  </div>
-</div>
 <div id="tab-samep" class="tab-panel">
   <div class="wrap">
     <h2 class="evt-h" style="color:#4A148C">&#127891; XVI SAMEP</h2>
